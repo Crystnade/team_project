@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, Center } from '@react-three/drei'
 import { Suspense } from 'react'
-import SimpleWireCar from './SimpleWireCar.jsx'
+import SimpleWireF1 from './SimpleWireF1.jsx'
 import ComponentMarkers from './ComponentMarkers.jsx'
 
 export default function VehicleScene(){
