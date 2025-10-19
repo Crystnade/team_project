@@ -35,7 +35,7 @@ export default function Dashboard(){
       </aside>
 
       <main className="canvas-panel">
-        <div className="topbar"><strong>Interactive 3D Vehicle</strong></div>
+        <div className="topbar"><strong>Interactive 3D Vehicle (wireframe)</strong></div>
         <div style={{position:'absolute', inset: '44px 8px 8px 8px'}}>
           <VehicleScene />
         </div>
