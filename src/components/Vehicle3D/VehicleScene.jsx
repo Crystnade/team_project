@@ -1,26 +1,8 @@
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, Center } from '@react-three/drei'
-import { Suspense, useMemo, useRef } from 'react'
+import { Suspense } from 'react'
 import VehicleModel from './VehicleModel.jsx'
-import { useHealthStore } from '../../stores/healthStore.js'
-import { highestSeverity } from '../../utils/health.js'
-
-function PulseEffect() {
-  const group = useRef()
-  const components = useHealthStore(s=>s.components)
-  const severity = highestSeverity(components)
-  useFrame(({ clock }) => {
-    if (!group.current) return
-    const t = clock.getElapsedTime()
-    const amp = severity === 2 ? 0.9 + Math.sin(t*4)*0.1 : severity === 1 ? 0.95 + Math.sin(t*2)*0.05 : 1
-    group.current.scale.setScalar(amp)
-  })
-  return (
-    <group ref={group}>
-      <VehicleModel />
-    </group>
-  )
-}
+import ComponentMarkers from './ComponentMarkers.jsx'
 
 export default function VehicleScene(){
   const bg = '#f5f7fb'
@@ -31,7 +13,8 @@ export default function VehicleScene(){
       <directionalLight position={[5,5,5]} intensity={1.1} />
       <Suspense fallback={null}>
         <Center>
-          <PulseEffect />
+          <VehicleModel />
+          <ComponentMarkers />
         </Center>
         <Environment preset="city" />
       </Suspense>
