@@ -12,12 +12,14 @@ const initialComponents = [
 ]
 
 export const useHealthStore = create((set, get) => ({
-  vehicle: { make: 'Demo Motors', model: 'Milk Truck', year: 2021, lastService: '2025-09-10', nextService: '2025-12-10' },
+  vehicle: { make: 'Demo Motors', model: 'Sedan', year: 2021, lastService: '2025-09-10', nextService: '2025-12-10' },
   components: initialComponents,
   alerts: [
     { id: 'a1', severity: 'critical', title: 'Brake pads critically worn', componentId: 'brakes' },
     { id: 'a2', severity: 'warning', title: 'Battery health decreasing', componentId: 'battery' },
     { id: 'a3', severity: 'info', title: 'Suspension service due soon', componentId: 'suspension' },
   ],
+  selectedComponentId: null,
+  setSelected: (id) => set({ selectedComponentId: id }),
   setStatus: (id, status) => set({ components: get().components.map(c => c.id===id?{...c,status}:c) })
 }))
