@@ -10,16 +10,18 @@ export default function VehicleModel(props){
   const components = useHealthStore(s=>s.components)
 
   useEffect(()=>{
-    const bySeverity = new Map(components.map(c=>[c.id, STATUS[c.status].color]))
     scene.traverse(obj=>{
       if (obj.isMesh && obj.material) {
-        obj.material.emissive = obj.material.emissive || { r:0,g:0,b:0, set(){}}
-        obj.material.emissive.set?.('#000000')
-        obj.material.emissiveIntensity = 0.2
-        obj.material.needsUpdate = true
+        const materials = Array.isArray(obj.material) ? obj.material : [obj.material]
+        materials.forEach(m => {
+          if ('wireframe' in m) m.wireframe = true
+          if ('color' in m) m.color?.set?.('#9aa1a8')
+          if ('emissiveIntensity' in m) m.emissiveIntensity = 0.0
+          m.needsUpdate = true
+        })
       }
     })
-  },[scene, components])
+  },[scene])
 
   return <primitive object={scene} {...props} />
 }
