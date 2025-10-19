@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useHealthStore } from '../../stores/healthStore.js'
 import { STATUS } from '../../utils/health.js'
 
-const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMilkTruck/glTF-Binary/CesiumMilkTruck.glb'
+const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Buggy/glTF-Binary/Buggy.glb'
 
 export default function VehicleModel(props){
   const { scene } = useGLTF(MODEL_URL)
