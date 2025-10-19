@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, Center } from '@react-three/drei'
 import { Suspense } from 'react'
-import VehicleModel from './VehicleModel.jsx'
+import SimpleWireCar from './SimpleWireCar.jsx'
 import ComponentMarkers from './ComponentMarkers.jsx'
 
 export default function VehicleScene(){
@@ -13,7 +13,7 @@ export default function VehicleScene(){
       <directionalLight position={[5,5,5]} intensity={1.1} />
       <Suspense fallback={null}>
         <Center>
-          <VehicleModel />
+          <SimpleWireCar />
           <ComponentMarkers />
         </Center>
         <Environment preset="city" />
