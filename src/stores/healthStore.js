@@ -12,7 +12,7 @@ const initialComponents = [
 ]
 
 export const useHealthStore = create((set, get) => ({
-  vehicle: { make: 'Demo Motors', model: 'Sedan', year: 2021, lastService: '2025-09-10', nextService: '2025-12-10' },
+  vehicle: { make: 'Demo Motors', model: 'Formula 1', year: 2021, lastService: '2025-09-10', nextService: '2025-12-10' },
   components: initialComponents,
   alerts: [
     { id: 'a1', severity: 'critical', title: 'Brake pads critically worn', componentId: 'brakes' },
