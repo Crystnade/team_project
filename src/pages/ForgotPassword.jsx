@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { post } from '../utils/api.js'
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    alert('Password reset link sent if the email exists.')
+    try {
+      await post('/auth/forgot', { email })
+      alert('Password reset link sent if the email exists.')
+    } catch (err) {
+      alert(err.message)
+    }
   }
   return (
     <div className="page-center">

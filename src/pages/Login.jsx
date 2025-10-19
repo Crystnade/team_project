@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { post } from '../utils/api.js'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -7,9 +8,14 @@ export default function Login() {
   const [remember, setRemember] = useState(true)
   const navigate = useNavigate()
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    navigate('/dashboard')
+    try {
+      await post('/auth/login', { email, password })
+      navigate('/dashboard')
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
   return (
