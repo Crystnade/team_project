@@ -13,7 +13,7 @@ export default function VehicleScene(){
       <directionalLight position={[5,5,5]} intensity={1.1} />
       <Suspense fallback={null}>
         <Center>
-          <SimpleWireCar />
+          <SimpleWireF1 />
           <ComponentMarkers />
         </Center>
         <Environment preset="city" />
