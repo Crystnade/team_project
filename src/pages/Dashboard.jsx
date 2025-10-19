@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import VehicleScene from '../components/Vehicle3D/VehicleScene.jsx'
 import { useHealthStore } from '../stores/healthStore.js'
 import { STATUS } from '../utils/health.js'
 
 export default function Dashboard(){
-  const { vehicle, components, alerts } = useHealthStore()
+  const { vehicle, components, alerts, theme, toggleTheme, model, setModel, loadInitial, scheduleService, acknowledgeAlert } = useHealthStore()
+  useEffect(()=>{ loadInitial() },[])
   const score = Math.max(0, 100 - alerts.filter(a=>a.severity!=='info').length*15)
 
   return (
@@ -35,7 +37,18 @@ export default function Dashboard(){
       </aside>
 
       <main className="canvas-panel">
-        <div className="topbar"><strong>Interactive 3D Vehicle (wireframe)</strong></div>
+        <div className="topbar" style={{gap:8}}>
+          <strong>Interactive 3D Vehicle</strong>
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <label style={{fontSize:12,color:'var(--muted-text)'}}>Model</label>
+            <select className="input-field" style={{width:160}} value={model} onChange={(e)=>setModel(e.target.value)}>
+              <option value="f1">F1 (wireframe)</option>
+              <option value="car">Car (wireframe)</option>
+              <option value="buggy">GLTF Buggy</option>
+            </select>
+            <button className="button-secondary" onClick={toggleTheme}>{theme==='dark'?'Light mode':'Dark mode'}</button>
+          </div>
+        </div>
         <div style={{position:'absolute', inset: '44px 8px 8px 8px'}}>
           <VehicleScene />
         </div>
@@ -44,15 +57,15 @@ export default function Dashboard(){
       <aside className="sidebar">
         <div className="topbar"><strong>Alerts</strong></div>
         <div className="alert-list">
-          {alerts.map(a=> (
+          {alerts.filter(a=>!a.acknowledged).map(a=> (
             <div key={a.id} className="alert-card">
               <div style={{display:'flex',justifyContent:'space-between'}}>
                 <strong>{a.title}</strong>
                 <span className={`badge ${a.severity==='critical'?'badge-red':a.severity==='warning'?'badge-yellow':'badge-blue'}`}>{a.severity}</span>
               </div>
               <div style={{display:'flex',gap:8}}>
-                <button className="button-primary">Schedule service</button>
-                <button className="button-secondary">Acknowledge</button>
+                <button className="button-primary" disabled={a.scheduled} onClick={()=>scheduleService(a.id)}>{a.scheduled?'Scheduled':'Schedule service'}</button>
+                <button className="button-secondary" onClick={()=>acknowledgeAlert(a.id)}>Acknowledge</button>
               </div>
             </div>
           ))}

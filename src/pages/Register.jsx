@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { post } from '../utils/api.js'
 
 export default function Register() {
   const [email, setEmail] = useState('')
@@ -7,10 +8,15 @@ export default function Register() {
   const [confirm, setConfirm] = useState('')
   const navigate = useNavigate()
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    if (password !== confirm) return
-    navigate('/dashboard')
+    if (password !== confirm) return alert('Passwords do not match')
+    try {
+      await post('/auth/register', { email, password })
+      navigate('/login')
+    } catch (err) {
+      alert(err.message)
+    }
   }
 
   return (
