@@ -14,30 +14,32 @@ function Marker({ position, color, pulse, onClick }){
   return (
     <mesh ref={ref} position={position} onClick={onClick}>
       <sphereGeometry args={[0.08, 16, 16]} />
-      <meshBasicMaterial color={color} transparent opacity={0.7} depthTest={false} toneMapped={false} />
+      <meshBasicMaterial color={color} transparent opacity={0.8} depthTest={false} toneMapped={false} />
     </mesh>
   )
 }
 
 export default function ComponentMarkers(){
-  const { components, setSelected } = useHealthStore()
+  const { components, alerts, setSelected } = useHealthStore()
 
+  // Approximate F1 layout positions
   const positions = useMemo(()=>({
-    engine: [[0,0.3,1.2]],
-    battery: [[-0.4,0.35,1.1]],
-    brakes: [[-0.8,-0.1,1.0],[0.8,-0.1,1.0],[-0.8,-0.1,-1.0],[0.8,-0.1,-1.0]],
-    transmission: [[0,0,-0.1]],
-    suspension: [[-0.8,0.2,1.0],[0.8,0.2,1.0],[-0.8,0.2,-1.0],[0.8,0.2,-1.0]],
-    exhaust: [[0,-0.2,-1.3]],
-    cooling: [[0,0.35,1.3]],
-    tires: [[-0.8,-0.1,1.0],[0.8,-0.1,1.0],[-0.8,-0.1,-1.0],[0.8,-0.1,-1.0]],
+    engine: [[-0.8,0.25,0]],
+    battery: [[1.6,0.25,0.3]],
+    brakes: [[1.4,-0.15,0.95],[1.4,-0.15,-0.95],[-1.2,-0.15,0.95],[-1.2,-0.15,-0.95]],
+    transmission: [[-0.9,0.0,0]],
+    suspension: [[1.4,0.1,0.95],[1.4,0.1,-0.95],[-1.2,0.1,0.95],[-1.2,0.1,-0.95]],
+    exhaust: [[-1.6,0.15,0]],
+    cooling: [[1.2,0.25,0]],
+    tires: [[1.4,-0.15,0.95],[1.4,-0.15,-0.95],[-1.2,-0.15,0.95],[-1.2,-0.15,-0.95]],
   }),[])
 
+  const alertSet = useMemo(()=> new Set(alerts.map(a=>a.componentId)), [alerts])
   const pulseFor = (status) => status==='critical'?'fast':status==='warning'?'slow':status==='maintenance'?null:null
 
   return (
     <group>
-      {components.map(c => (positions[c.id]||[]).map((p,i)=> (
+      {components.filter(c=>alertSet.has(c.id)).map(c => (positions[c.id]||[]).map((p,i)=> (
         <Marker key={c.id+i} position={p} color={STATUS[c.status].color} pulse={pulseFor(c.status)} onClick={()=>setSelected(c.id)} />
       )))}
     </group>
